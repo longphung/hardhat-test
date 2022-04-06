@@ -1,10 +1,36 @@
-import { useState } from 'react'
+import {useEffect, useState} from 'react'
+import Web3Modal from "web3modal";
+
 import logo from './logo.svg'
 import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
 
+  const initWeb3 = async () => {
+    const providerOptions = {
+      /* See Provider Options Section */
+    };
+
+    const web3Modal = new Web3Modal({
+      network: "https", // optional
+      cacheProvider: true, // optional
+      providerOptions // required
+    });
+
+    const provider = await web3Modal.connect();
+
+    const web3 = new Web3(provider || 'http://localhost:8545')
+    web3.eth.getAccounts().then(console.log);
+  }
+
+  useEffect(() => {
+    initWeb3();
+  }, [initWeb3]);
+
+  /* =========
+     Render
+     ========= */
   return (
     <div className="App">
       <header className="App-header">
